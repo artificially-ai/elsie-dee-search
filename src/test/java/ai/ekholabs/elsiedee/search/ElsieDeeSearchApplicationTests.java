@@ -1,4 +1,4 @@
-package ai.ekholabs.elsiedee.search.elsiedeesearch;
+package ai.ekholabs.elsiedee.search;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
