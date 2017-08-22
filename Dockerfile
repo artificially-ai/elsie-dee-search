@@ -12,4 +12,4 @@ ENV CONFIGURATION_SERVER_PORT=8082
 ENV EUREKA_SERVICE_PORT=8083
 
 ENTRYPOINT ["java"]
-CMD ["-server", "-Xmx256MB", "-jar", "elsie-dee-search.jar"]
+CMD ["-server", "-Xmx256M", "-jar", "elsie-dee-search.jar"]
