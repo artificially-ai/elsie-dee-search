@@ -24,3 +24,12 @@ hs_err_pid*
 # IDEA
 .idea
 elsie-dee-search.iml
+
+# Gradle
+.gradle
+
+# Build
+build/
+
+# Elasticsearch
+data
