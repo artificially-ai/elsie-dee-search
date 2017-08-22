@@ -2,6 +2,7 @@ package ai.ekholabs.elsiedee.search.service;
 
 import java.util.List;
 
+import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
 import ai.ekholabs.elsiedee.search.model.AssetKeyword;
 import ai.ekholabs.elsiedee.search.repo.AssetRepository;
@@ -35,8 +36,8 @@ public class ElasticSearchService {
     this.keywordRepository = keywordRepository;
   }
 
-  public void createIndex(final Class indexClass) {
-    elasticsearchOperations.createIndex(indexClass);
+  public Acknowledge createIndex(final Class indexClass) {
+    return new Acknowledge(elasticsearchOperations.createIndex(indexClass));
   }
 
   public Asset createAsset(final Asset asset) {

@@ -2,11 +2,11 @@ package ai.ekholabs.elsiedee.search.controller;
 
 import java.util.List;
 
+import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
 import ai.ekholabs.elsiedee.search.model.AssetKeyword;
 import ai.ekholabs.elsiedee.search.service.ElasticSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +25,9 @@ public class ElsieDeeAssetController {
     this.elasticSearchService = elasticSearchService;
   }
 
-  @GetMapping("/createAssetIndex")
-  public ResponseEntity createAssetIndex() {
-    elasticSearchService.createIndex(Asset.class);
-    return ResponseEntity.ok().build();
+  @GetMapping(value = "/createAssetIndex", produces = APPLICATION_JSON_UTF8_VALUE)
+  public Acknowledge createAssetIndex() {
+    return elasticSearchService.createIndex(Asset.class);
   }
 
   @PostMapping(value = "/createAsset", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
