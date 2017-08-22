@@ -1,6 +1,6 @@
 FROM debian:latest
 
-RUN apt-get -y update && apt-get install -y openjdk-8-jre vim procps vlc
+RUN apt-get -y update && apt-get install -y openjdk-8-jre vim procps
 
 COPY build/libs/elsie-dee-search-1.0-SNAPSHOT.jar /ekholabs/elsie-dee-search.jar
 
