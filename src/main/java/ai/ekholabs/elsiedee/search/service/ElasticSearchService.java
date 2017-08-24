@@ -5,6 +5,7 @@ import java.util.List;
 import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
 import ai.ekholabs.elsiedee.search.model.AssetKeyword;
+import ai.ekholabs.elsiedee.search.model.Keyword;
 import ai.ekholabs.elsiedee.search.repo.AssetRepository;
 import ai.ekholabs.elsiedee.search.repo.KeywordRepository;
 import org.slf4j.LoggerFactory;
@@ -48,10 +49,9 @@ public class ElasticSearchService {
     return keywordRepository.save(assetKeyword);
   }
 
-  public List<Asset> findByKeywords(final List<AssetKeyword> keywords) {
-    final String collectedKeywords = keywords
-        .stream()
-        .map(assetKeyword -> assetKeyword.keyword)
+  public List<Asset> findByKeywords(final List<Keyword> keywords) {
+    final String collectedKeywords = keywords.stream()
+        .map(keyword -> keyword.getLabel())
         .collect(joining(" "));
 
     LOGGER.info("Collected keywords list: {}", collectedKeywords);
@@ -62,5 +62,13 @@ public class ElasticSearchService {
         .build();
 
     return elasticsearchOperations.queryForList(searchQuery, Asset.class);
+  }
+
+  public List<AssetKeyword> findKeywords(final AssetKeyword assetKeyword) {
+    return keywordRepository.findByAssetTitle(assetKeyword.getAssetTitle());
+  }
+
+  public void deleteKeyword(final String id) {
+    keywordRepository.delete(id);
   }
 }

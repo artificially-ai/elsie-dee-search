@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import static java.util.Arrays.asList;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -52,7 +51,7 @@ public class ElsieDeeAssetController {
   }
 
   @PostMapping(value = "/assets", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-  public List<Asset> assets(@RequestBody final AssetKeyword[] keywords) {
-    return elasticSearchService.findByKeywords(asList(keywords));
+  public List<Asset> assets(@RequestBody final AssetKeyword assetKeyword) {
+    return elasticSearchService.findByKeywords(assetKeyword.getKeywords());
   }
 }
