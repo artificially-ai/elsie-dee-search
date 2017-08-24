@@ -8,6 +8,7 @@ import ai.ekholabs.elsiedee.search.model.AssetKeyword;
 import ai.ekholabs.elsiedee.search.model.Keyword;
 import ai.ekholabs.elsiedee.search.repo.AssetRepository;
 import ai.ekholabs.elsiedee.search.repo.KeywordRepository;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -17,8 +18,8 @@ import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.joining;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.nestedQuery;
 
 @Service
 public class ElasticSearchService {
@@ -56,9 +57,11 @@ public class ElasticSearchService {
 
     LOGGER.info("Collected keywords list: {}", collectedKeywords);
 
+    final QueryBuilder builder = nestedQuery("subtitles", boolQuery()
+        .should(matchQuery("subtitles.text", collectedKeywords)));
+
     final SearchQuery searchQuery = new NativeSearchQueryBuilder()
-        .withQuery(matchAllQuery())
-        .withFilter(boolQuery().should(matchQuery("subtitles", collectedKeywords)))
+        .withQuery(builder)
         .build();
 
     return elasticsearchOperations.queryForList(searchQuery, Asset.class);

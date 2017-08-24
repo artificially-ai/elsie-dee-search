@@ -2,6 +2,8 @@ package ai.ekholabs.elsiedee.search.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Document(indexName = "library", type = "asset")
 public class Asset {
@@ -10,12 +12,14 @@ public class Asset {
   private String id;
 
   private String title;
-  private String subtitles;
+
+  @Field(type = FieldType.Nested)
+  private Subtitles subtitles;
 
   Asset() {
   }
 
-  public Asset(final String title, final String subtitles) {
+  public Asset(final String title, final Subtitles subtitles) {
     this.title = title;
     this.subtitles = subtitles;
   }
@@ -28,7 +32,7 @@ public class Asset {
     return title;
   }
 
-  public String getSubtitles() {
+  public Subtitles getSubtitles() {
     return subtitles;
   }
 
@@ -65,7 +69,7 @@ public class Asset {
     return "Asset{" +
         "id='" + id + '\'' +
         ", title='" + title + '\'' +
-        ", subtitles='" + subtitles + '\'' +
+        ", subtitles=" + subtitles +
         '}';
   }
 }

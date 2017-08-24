@@ -9,7 +9,11 @@ import java.util.stream.Collectors;
 import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
 import ai.ekholabs.elsiedee.search.model.AssetKeyword;
+import ai.ekholabs.elsiedee.search.model.Subtitles;
 import ai.ekholabs.elsiedee.search.service.ElasticSearchService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +28,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RestController
 public class ElsieDeeAssetController {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ElsieDeeAssetController.class);
+
   private final ElasticSearchService elasticSearchService;
 
   @Autowired
@@ -37,16 +43,18 @@ public class ElsieDeeAssetController {
   }
 
   @PostMapping(value = "/createAsset", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-  public Asset createAsset(@RequestParam(value = "title") final String title,  final @RequestParam(value = "subtitles") MultipartFile subtitles)
-      throws IOException {
+  public Asset createAsset(final @RequestParam(value = "title") String title,
+                           final @RequestParam(value = "subtitles") MultipartFile subtitlesFile) throws IOException {
 
     final StringBuilder builder = new StringBuilder();
-    try (BufferedReader buffer = new BufferedReader(new InputStreamReader(subtitles.getInputStream()))) {
-      final String subtitlesText = buffer.lines().collect(Collectors.joining("\n"));
+    try (BufferedReader buffer = new BufferedReader(new InputStreamReader(subtitlesFile.getInputStream()))) {
+      final String subtitlesText = buffer.lines().collect(Collectors.joining(" "));
       builder.append(subtitlesText);
     }
 
-    final Asset asset = new Asset(title, builder.toString());
+    final Subtitles subtitles = new ObjectMapper().readValue(builder.toString(), Subtitles.class);
+    final Asset asset = new Asset(title, subtitles);
+
     return elasticSearchService.createAsset(asset);
   }
 
