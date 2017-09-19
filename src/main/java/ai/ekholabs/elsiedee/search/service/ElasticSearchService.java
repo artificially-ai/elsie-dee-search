@@ -4,7 +4,7 @@ import java.util.List;
 
 import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
-import ai.ekholabs.elsiedee.search.model.AssetKeyword;
+import ai.ekholabs.elsiedee.search.model.AssetDetails;
 import ai.ekholabs.elsiedee.search.model.Keyword;
 import ai.ekholabs.elsiedee.search.repo.AssetRepository;
 import ai.ekholabs.elsiedee.search.repo.KeywordRepository;
@@ -46,8 +46,8 @@ public class ElasticSearchService {
     return assetRepository.save(asset);
   }
 
-  public AssetKeyword createKeyword(final AssetKeyword assetKeyword) {
-    return keywordRepository.save(assetKeyword);
+  public AssetDetails createKeyword(final AssetDetails assetDetails) {
+    return keywordRepository.save(assetDetails);
   }
 
   public List<Asset> findByKeywords(final List<Keyword> keywords) {
@@ -67,8 +67,8 @@ public class ElasticSearchService {
     return elasticsearchOperations.queryForList(searchQuery, Asset.class);
   }
 
-  public List<AssetKeyword> findKeywords(final AssetKeyword assetKeyword) {
-    return keywordRepository.findByAssetTitle(assetKeyword.getAssetTitle());
+  public List<AssetDetails> findKeywords(final AssetDetails assetDetails) {
+    return keywordRepository.findByAssetTitle(assetDetails.getAssetTitle());
   }
 
   public void deleteKeyword(final String id) {

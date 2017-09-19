@@ -3,7 +3,7 @@ package ai.ekholabs.elsiedee.search.controller;
 import java.util.List;
 
 import ai.ekholabs.elsiedee.search.model.Acknowledge;
-import ai.ekholabs.elsiedee.search.model.AssetKeyword;
+import ai.ekholabs.elsiedee.search.model.AssetDetails;
 import ai.ekholabs.elsiedee.search.service.ElasticSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +28,17 @@ public class ElsieDeeKeywordController {
 
   @GetMapping(value = "/createKeywordIndex", produces = APPLICATION_JSON_UTF8_VALUE)
   public Acknowledge createKeywordIndex() {
-    return elasticSearchService.createIndex(AssetKeyword.class);
+    return elasticSearchService.createIndex(AssetDetails.class);
   }
 
   @PostMapping(value = "/createKeyword", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-  public AssetKeyword createKeyword(@RequestBody final AssetKeyword assetKeyword) {
-    return elasticSearchService.createKeyword(assetKeyword);
+  public AssetDetails createKeyword(@RequestBody final AssetDetails assetDetails) {
+    return elasticSearchService.createKeyword(assetDetails);
   }
 
   @PostMapping(value = "/findKeywords", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-  public List<AssetKeyword> getAssetKeyword(@RequestBody final AssetKeyword assetKeyword) {
-    return elasticSearchService.findKeywords(assetKeyword);
+  public List<AssetDetails> getAssetKeyword(@RequestBody final AssetDetails assetDetails) {
+    return elasticSearchService.findKeywords(assetDetails);
   }
 
   @DeleteMapping("/keyword/{id}")

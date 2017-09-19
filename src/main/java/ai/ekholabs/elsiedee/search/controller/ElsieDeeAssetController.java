@@ -5,7 +5,7 @@ import java.util.List;
 
 import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
-import ai.ekholabs.elsiedee.search.model.AssetKeyword;
+import ai.ekholabs.elsiedee.search.model.AssetDetails;
 import ai.ekholabs.elsiedee.search.model.Subtitles;
 import ai.ekholabs.elsiedee.search.service.ElasticSearchService;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class ElsieDeeAssetController {
   }
 
   @PostMapping(value = "/assets", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-  public List<Asset> assets(@RequestBody final AssetKeyword assetKeyword) {
-    return elasticSearchService.findByKeywords(assetKeyword.getKeywords());
+  public List<Asset> assets(@RequestBody final AssetDetails assetDetails) {
+    return elasticSearchService.findByKeywords(assetDetails.getKeywords());
   }
 }

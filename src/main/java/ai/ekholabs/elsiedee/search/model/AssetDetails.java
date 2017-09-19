@@ -7,8 +7,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Document(indexName = "keys", type = "asset_keyword")
-public class AssetKeyword {
+@Document(indexName = "keys", type = "asset_details")
+public class AssetDetails {
 
   @Id
   private String id;
@@ -18,10 +18,10 @@ public class AssetKeyword {
   @Field(type = FieldType.Nested)
   public List<Keyword> keywords;
 
-  AssetKeyword() {
+  AssetDetails() {
   }
 
-  public AssetKeyword(final String assetTitle, final List<Keyword> keywords) {
+  public AssetDetails(final String assetTitle, final List<Keyword> keywords) {
     this.assetTitle = assetTitle;
     this.keywords = keywords;
   }
@@ -47,7 +47,7 @@ public class AssetKeyword {
       return false;
     }
 
-    final AssetKeyword that = (AssetKeyword) o;
+    final AssetDetails that = (AssetDetails) o;
 
     if (id != null ? !id.equals(that.id) : that.id != null) {
       return false;
@@ -68,7 +68,7 @@ public class AssetKeyword {
 
   @Override
   public String toString() {
-    return "AssetKeyword{" +
+    return "AssetDetails{" +
         "id='" + id + '\'' +
         ", assetTitle='" + assetTitle + '\'' +
         ", keywords=" + keywords +
