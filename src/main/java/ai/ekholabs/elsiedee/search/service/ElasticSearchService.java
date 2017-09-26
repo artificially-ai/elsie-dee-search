@@ -4,10 +4,7 @@ import java.util.List;
 
 import ai.ekholabs.elsiedee.search.model.Acknowledge;
 import ai.ekholabs.elsiedee.search.model.Asset;
-import ai.ekholabs.elsiedee.search.model.AssetDetails;
-import ai.ekholabs.elsiedee.search.model.Keyword;
 import ai.ekholabs.elsiedee.search.repo.AssetRepository;
-import ai.ekholabs.elsiedee.search.repo.KeywordRepository;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +25,12 @@ public class ElasticSearchService {
 
   private final ElasticsearchOperations elasticsearchOperations;
   private final AssetRepository assetRepository;
-  private final KeywordRepository keywordRepository;
 
   @Autowired
   public ElasticSearchService(final ElasticsearchOperations elasticsearchOperations,
-                              final AssetRepository assetRepository, final KeywordRepository keywordRepository) {
+                              final AssetRepository assetRepository) {
     this.elasticsearchOperations = elasticsearchOperations;
     this.assetRepository = assetRepository;
-    this.keywordRepository = keywordRepository;
   }
 
   public Acknowledge createIndex(final Class indexClass) {
@@ -46,13 +41,8 @@ public class ElasticSearchService {
     return assetRepository.save(asset);
   }
 
-  public AssetDetails createKeyword(final AssetDetails assetDetails) {
-    return keywordRepository.save(assetDetails);
-  }
-
-  public List<Asset> findByKeywords(final List<Keyword> keywords) {
+  public List<Asset> findByKeywords(final List<String> keywords) {
     final String collectedKeywords = keywords.stream()
-        .map(keyword -> keyword.getLabel())
         .collect(joining(" "));
 
     LOGGER.info("Collected keywords list: {}", collectedKeywords);
@@ -65,13 +55,5 @@ public class ElasticSearchService {
         .build();
 
     return elasticsearchOperations.queryForList(searchQuery, Asset.class);
-  }
-
-  public List<AssetDetails> findKeywords(final AssetDetails assetDetails) {
-    return keywordRepository.findByAssetTitle(assetDetails.getAssetTitle());
-  }
-
-  public void deleteKeyword(final String id) {
-    keywordRepository.delete(id);
   }
 }

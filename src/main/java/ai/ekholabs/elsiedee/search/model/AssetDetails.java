@@ -16,25 +16,22 @@ public class AssetDetails {
   private String assetTitle;
 
   @Field(type = FieldType.Nested)
-  public List<Keyword> keywords;
+  public List<String> keywords;
 
   AssetDetails() {
   }
 
-  public AssetDetails(final String assetTitle, final List<Keyword> keywords) {
+  public AssetDetails(final String id, final String assetTitle, final List<String> keywords) {
+    this.id = id;
     this.assetTitle = assetTitle;
     this.keywords = keywords;
-  }
-
-  public String getId() {
-    return id;
   }
 
   public String getAssetTitle() {
     return assetTitle;
   }
 
-  public List<Keyword> getKeywords() {
+  public List<String> getKeywords() {
     return keywords;
   }
 
